@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section container">
+    <legend class="border-bottom mb-4 mt-2">
+        <h3>Status</h3>
+    </legend>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-outline-info">Save</button>
+    </form>
+</div>
+<div class="content-section container">
+    <legend class="border-bottom mb-4 mt-2">
+        <h3>Code</h3>
+    </legend>
+    <small class="text-muted">
+        <pre>{{ code.codearea }}</pre>
+    </small>
+</div>
+    <div class="content-section container">
+    <legend class="border-bottom mb-4 mt-2">
+        <h3>Output</h3>
+    </legend>
+    <small class="text-muted">
+        <pre>{{ code.output }}</pre>
+    </small>
+</div>
+{% endblock content %}

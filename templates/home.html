@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load embed_video_tags %}
+{% block content %}
+<div class="row">
+    <div class="col-md-7 col-sm-6">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <form action="" method="post" class="pyhtonide">
+                    {% csrf_token %}
+                    <div class="form-group-pt-3">
+                        <textarea class="form-control" id="codearea" name="codearea" type="text"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea type="text" class="form-control" id="output" name="output" rows="10"
+                            disabled>{{ output }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="run">Run</button>
+                    {% if form2 %}
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#feedbackModal"
+                        style="float: right;">Feedback Form</button>
+                    {% endif %}
+                </form>
+                {% if form2 %}
+                <!-- Modal -->
+                <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog"
+                    aria-labelledby="feedbackModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="feedbackModalLabel">Feedback Form</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    {{ form2_val|crispy }}
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5 col-sm-6">
+        <div class="content-section">
+            <div class="video-container">{% video main_video.url '20%x20%' %}</div>
+        </div>
+        <div class="content-section">
+            {% comment %} SIDEBAR {% endcomment %}
+            <h3>Playlist</h3>
+            <p class='text-muted'>
+            <ul class="list-group infinite-scroll" style="max-height: 61vh; overflow-y: scroll;">
+                {% for video in videos %}
+                {% if forloop.counter == index %}
+                <li class="list-group-item list-group-item-light disable"><a>
+                        {% else %}
+                <li class="list-group-item list-group-item-light"> <a
+                        href="{% url 'Course-home' %}{{ forloop.counter }}">
+                        {% endif %}
+                        {% video video.url as my_video %}
+                        <img class="thumbnail" src="{{ my_video.thumbnail }}">
+                        {% endvideo %}
+                        <p class="title">{{ video.title }}</p>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            </p>
+            {% comment %} SIDEBAR END {% endcomment %}
+
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("run").disabled = true;
+    const editor = CodeMirror.fromTextArea(
+        document.getElementById("codearea"),
+        {
+            mode: {
+                name: "python",
+                version: 3,
+                singleLineStringErrors: false,
+            },
+            lineNumbers: true,
+            indentUnit: 4,
+            matchBrackets: true,
+            viewportMargin: Infinity,
+        }
+    );
+    var htmlString = `{{my_code.codearea}}`;
+    function decodeEntities(s) {
+        var str,
+            temp = document.createElement("p");
+        temp.innerHTML = s;
+        str = temp.textContent || temp.innerText;
+        temp = null;
+        return str;
+    }
+    htmlString = decodeEntities(htmlString);
+    editor.setValue(htmlString);
+    editor.setSize("", "650");
+    editor.getViewport(0, 200);
+    CodeMirror.on(editor,"change",function () {
+        var cur = editor.getValue();
+        if(cur === htmlString)
+        {
+            document.getElementById("run").disabled = true;
+        }
+        else
+        {
+            document.getElementById("run").disabled = false;
+        }
+    })
+</script>
+{% endblock content %}
