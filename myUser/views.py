@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .forms import UserSignUpForm,EditStatusForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import views as auth_views
 from .models import Video,pythonCode
 import requests
 import csv
@@ -127,3 +128,12 @@ def download_data(request):
         }   
         return render(request,'list_codes.html',context=context)
 
+class MyLoginView(auth_views.LoginView):
+    template_name = 'login.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'video' : Video.objects.all().first()
+        })
+        return context
