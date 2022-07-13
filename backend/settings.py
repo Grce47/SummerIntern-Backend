@@ -152,8 +152,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 HIDDEN_CREDENTIALS = {
-    'USER' : 'test@gmail.com',
-    'PASS' : 'test,'
+    'USER' : 'tmreset.donotreply@gmail.com',
+    'PASS' : 'icbfmkjvuamvwzhi'
 }
 
 EMAIL_HOST_USER = HIDDEN_CREDENTIALS['USER']
