@@ -7,6 +7,8 @@ from django.contrib.auth import views as auth_views
 from .models import Video,pythonCode
 import requests
 import csv
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 JDOODLE_INFO = {
@@ -14,6 +16,23 @@ JDOODLE_INFO = {
     'clientSecret' : '4f50bf0ab404ca19efaae76d33ce378f90f569cf16e72fe26dc54939087b8f1',
     'url' : 'https://api.jdoodle.com/v1/execute'
 }
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'change_password.html', {
+        'form': form
+    })
 
 def signup(request):
     if request.method == 'POST':

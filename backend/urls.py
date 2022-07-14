@@ -15,6 +15,7 @@ urlpatterns = [
     path('api/',include('api.urls')),
     path('list_codes/',User_views.listcodes,name='myUser-listcodes'),
     path('download/',User_views.download_data,name='myUser-download'),
+    path('password/',User_views.change_password,name='change_password'),
     path('detail_code/',User_views.detailcodes,name='myUser-detailcode'),
     path('detail_code/<int:index>',User_views.detailcodes,name='User-detailcode'),
     path('',User_views.course,name='Course-home'),
