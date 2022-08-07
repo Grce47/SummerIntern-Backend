@@ -6,14 +6,15 @@
 {% if user.is_authenticated %}
 <div class="container">
     <legend class="border-bottom mb-4">
-        <h2>Already Logged in!</h2>
+        <h2>Already Logged in!</h2><!--Show this message if User is already logged in-->
     </legend>
     <small class="text-muted">
-        <a href="{% url 'Course-home' %}">Course Page</a>
+        <a href="{% url 'Course-home' %}">Course Page</a><!--With a link to the course homepage-->
     </small>
 </div>
 {% else %}
     <div class="content-section container">
+        <!--form defined by views.py is used here-->
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
@@ -23,12 +24,13 @@
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group">
-                <button type="submit" class="btn btn-outline-info">Login</button>
-                <small class="text-muted ml-2">
+                <button type="submit" class="btn btn-outline-info">Login</button><!--Login Button-->
+                <!--<small class="text-muted ml-2">
                     <a href="{% url 'password_reset' %}">Forgot Password?</a>
-                </small>
+                </small>-->
             </div>
         </form>
+        <!--show preview video-->
         <div class="login-video-container">
             <div class="inner-video">
                 {% video video.url '100%x100%' %}

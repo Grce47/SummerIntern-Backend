@@ -4,6 +4,7 @@
     <div class="content-section container">
         <ul class="list-group">
             {% for code in codes %}
+            <!--Show all codes by traversing in a for loop-->
             <li class="list-group-item"><a href="{% url 'myUser-detailcode' %}{{ forloop.counter }}">{{code}}</a></li>
             {% endfor %}
           </ul>

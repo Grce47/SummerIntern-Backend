@@ -12,9 +12,9 @@ class LoggedInUser(models.Model):
 
 
 class Video(models.Model):
-    title = models.CharField(max_length=100)
-    added = models.DateTimeField(auto_now_add=True)
-    url = EmbedVideoField(default="https://youtu.be/dQw4w9WgXcQ") 
+    title = models.CharField(max_length=100)    #title of the video
+    added = models.DateTimeField(auto_now_add=True) #time when it was added
+    url = EmbedVideoField(default="https://youtu.be/dQw4w9WgXcQ")   #url of the video
 
     def __str__(self):
         return str(self.title)

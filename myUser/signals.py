@@ -1,3 +1,7 @@
+'''
+This codes keeps track of the sessions of the user whenever they log out
+This is responsible for the removal of sessions from user whenever needed.
+'''
 from django.contrib.auth import user_logged_in, user_logged_out
 from django.dispatch import receiver
 from myUser.models import LoggedInUser

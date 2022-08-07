@@ -6,17 +6,20 @@
     <div class="col-md-7 col-sm-6">
         <div class="row">
             <div class="col-md-12 col-sm-12">
+                <!--The Python IDE Goes here-->
                 <form action="" method="post" class="pyhtonide">
                     {% csrf_token %}
                     <div class="form-group-pt-3">
                         <textarea class="form-control" id="codearea" name="codearea" type="text"></textarea>
                     </div>
-
+                    <!--Output textbox-->
                     <div class="form-group">
                         <textarea type="text" class="form-control" id="output" name="output" rows="10"
                             disabled>{{ output }}</textarea>
                     </div>
+                    <!--Run button-->
                     <button type="submit" class="btn btn-primary" id="run">Run</button>
+                    <!--Feedback Form-->
                     {% if form2 %}
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#feedbackModal"
                         style="float: right;">Feedback Form</button>
@@ -34,7 +37,7 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-
+                            <!--Feedback form details-->
                             <form action="" method="post">
                                 {% csrf_token %}
                                 <div class="modal-body">
@@ -55,9 +58,11 @@
         </div>
     </div>
     <div class="col-md-5 col-sm-6">
+        <!--main video-->
         <div class="content-section">
             <div class="video-container">{% video main_video.url '20%x20%' %}</div>
         </div>
+        <!--Playlist-->
         <div class="content-section">
             {% comment %} SIDEBAR {% endcomment %}
             <h3>Playlist</h3>
@@ -65,12 +70,15 @@
             <ul class="list-group infinite-scroll" style="max-height: 61vh; overflow-y: scroll;">
                 {% for video in videos %}
                 {% if forloop.counter == index %}
+                <!--Disable going to the same page again-->
                 <li class="list-group-item list-group-item-light disable"><a>
                         {% else %}
+                <!--Enable going to all the other video pages-->
                 <li class="list-group-item list-group-item-light"> <a
                         href="{% url 'Course-home' %}{{ forloop.counter }}">
                         {% endif %}
                         {% video video.url as my_video %}
+                        <!--Show the Thumbnail-->
                         <img class="thumbnail" src="{{ my_video.thumbnail }}">
                         {% endvideo %}
                         <p class="title">{{ video.title }}</p>
@@ -84,6 +92,7 @@
         </div>
     </div>
 </div>
+<!--JDdoodle Python IDE Scripts-->
 <script>
     document.getElementById("run").disabled = true;
     const editor = CodeMirror.fromTextArea(

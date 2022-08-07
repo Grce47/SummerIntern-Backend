@@ -3,10 +3,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import pythonCode
 
-class UserSignUpForm(UserCreationForm):
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    email = forms.EmailField()
+class UserSignUpForm(UserCreationForm): #we use the USerCreationForm from Django (username and password fields are created in that only)
+    first_name = forms.CharField()  #first name field
+    last_name = forms.CharField()   #last name field
+    email = forms.EmailField()      #email field
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -14,10 +14,10 @@ class UserSignUpForm(UserCreationForm):
                   'email', 'password1', 'password2')
 
 
-class EditStatusForm(forms.ModelForm):
+class EditStatusForm(forms.ModelForm):  #the code status form (Done check and feedback button)
     class Meta:
         model = pythonCode
-        fields = ['Done','Feedback']
+        fields = ['Done','Feedback']    #fields are added in here
     
     def __init__(self, *args, **kwargs):
         super(EditStatusForm, self).__init__(*args, **kwargs)

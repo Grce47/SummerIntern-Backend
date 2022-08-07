@@ -1,3 +1,9 @@
+'''
+middlewares.py ansd signals.py are responsible for access control
+AccessRestricter class is activated whenever a view is called
+We exploit this to remove sessions from the session list, which logs the user out on refresh.
+'''
+
 from django.contrib.sessions.models import Session
 class AccessRestricter:
     def __init__(self, get_response):
@@ -8,18 +14,21 @@ class AccessRestricter:
         if request.user.is_authenticated:   #When the user logs in
 
             current_session_key = request.user.logged_in_user.session_key  
-            current_session_key_2 = request.user.logged_in_user.session_key_2   #the session keys of the current user before this login
+            current_session_key_2 = request.user.logged_in_user.session_key_2   #the session keys of the current user before this login are stored in these two variables
 
-            if current_session_key_2 and current_session_key != request.session.session_key and current_session_key_2 != request.session.session_key:  #this session key is different
-                print("CAUGHT SOMETHING",current_session_key,current_session_key_2,request.session.session_key)  #debug codes
-                Session.objects.get(session_key=current_session_key).delete()   #the 1st session is force logged out
+            if current_session_key_2 and current_session_key != request.session.session_key and current_session_key_2 != request.session.session_key:  #this session key is different then the two in which the user is logged in
+                #print("CAUGHT SOMETHING",current_session_key,current_session_key_2,request.session.session_key)  #debug codes
+                try:    
+                    Session.objects.get(session_key=current_session_key).delete()   #the 1st session is force logged out
+                except:
+                    pass
                 request.user.logged_in_user.session_key = request.user.logged_in_user.session_key_2   #the 2nd session is now the 1st session
                 request.user.logged_in_user.session_key_2 = request.session.session_key   #this session is now the 2nd session
             if not current_session_key:     #in case of 1st login
-                print("1st Login",current_session_key,current_session_key_2,request.session.session_key)
+                #print("1st Login",current_session_key,current_session_key_2,request.session.session_key)
                 request.user.logged_in_user.session_key = request.session.session_key
             elif not current_session_key_2 and current_session_key != request.session.session_key:    #in case of 2nd login
-                print("2nd Login",current_session_key,current_session_key_2,request.session.session_key)
+                #print("2nd Login",current_session_key,current_session_key_2,request.session.session_key)
                 request.user.logged_in_user.session_key_2 = request.session.session_key
             request.user.logged_in_user.save()                  #and the data is saved to the database
         response = self.get_response(request)
