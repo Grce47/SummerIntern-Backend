@@ -1,6 +1,4 @@
 # SummerIntern-Backend
-## About
-On-Going Project. 
 ## Instruction
 - **Create virtual environment**
 ```bash
